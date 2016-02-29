@@ -10,6 +10,7 @@ import com.jared.emlazychat.R;
 import com.jared.emlazychat.base.BaseActivity;
 import com.jared.emlazychat.fragment.LogoFra;
 import com.jared.emlazychat.fragment.SignInFra;
+import com.jared.emlazychat.fragment.SignUpFra;
 import com.jared.emlazychat.widget.NormalTopBar;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener{
@@ -148,7 +149,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     public void go2SignUp() {
         Fragment fragment = fm.findFragmentByTag(TAG_SIGN_UP);
         if(fragment == null) {
-
+            fragment = new SignUpFra();
         }
 
         mTopBar.setVisibility(View.VISIBLE);
@@ -169,7 +170,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         }
 
         if(fragment == null) {
+
         }
+
         mTopBar.setVisibility(View.VISIBLE);
         mTopBar.setTitle("填写信息");
         mTopBar.setBackVisibility(false);

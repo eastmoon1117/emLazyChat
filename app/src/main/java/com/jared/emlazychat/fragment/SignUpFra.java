@@ -17,44 +17,41 @@ import com.jared.emlazychat.utils.ToastUtil;
 /**
  * Created by jared on 16/2/28.
  */
-public class SignInFra extends BaseFragment implements View.OnClickListener{
+public class SignUpFra extends BaseFragment implements View.OnClickListener {
+
 
     private EditText etAccount;
     private EditText etPwd;
-    private Button btnSignIn;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private Button btnSignUp;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fra_sign_in, container, false);
+        View view = inflater.inflate(R.layout.fra_sign_up, container, false);
         initView(view);
         initEvent();
+
         return view;
     }
 
     private void initView(View view) {
-        etAccount = (EditText) view.findViewById(R.id.et_sign_in_account);
-        etPwd = (EditText) view.findViewById(R.id.et_sign_in_pwd);
-        btnSignIn = (Button) view.findViewById(R.id.btn_sign_in);
+        etAccount = (EditText) view.findViewById(R.id.et_sign_up_account);
+        etPwd = (EditText) view.findViewById(R.id.et_sign_up_pwd);
+        btnSignUp = (Button) view.findViewById(R.id.btn_sign_up);
     }
 
     private void initEvent() {
-        btnSignIn.setOnClickListener(this);
+        btnSignUp.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        if(view == btnSignIn) {
-            doSignIn();
+        if(view == btnSignUp) {
+            doSignUp();
         }
     }
 
-    private void doSignIn() {
+    private void doSignUp() {
         Context context = getActivity();
         if(context == null) {
             return;
@@ -63,13 +60,13 @@ public class SignInFra extends BaseFragment implements View.OnClickListener{
         String account = etAccount.getText().toString().trim();
         if(TextUtils.isEmpty(account)) {
             ToastUtil.show(context, "用户名不能为空");
-            return;
         }
 
         String password = etPwd.getText().toString().trim();
         if(TextUtils.isEmpty(password)) {
-            ToastUtil.show(context, "密码为空");
-            return;
+            ToastUtil.show(context, "密码不能为空");
         }
+
     }
+
 }
