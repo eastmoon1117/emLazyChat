@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.jared.emlazychat.R;
 import com.jared.emlazychat.base.BaseActivity;
+import com.jared.emlazychat.fragment.FillInfoFra;
 import com.jared.emlazychat.fragment.LogoFra;
 import com.jared.emlazychat.fragment.SignInFra;
 import com.jared.emlazychat.fragment.SignUpFra;
@@ -170,7 +171,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         }
 
         if(fragment == null) {
-
+            fragment = new FillInfoFra();
         }
 
         mTopBar.setVisibility(View.VISIBLE);

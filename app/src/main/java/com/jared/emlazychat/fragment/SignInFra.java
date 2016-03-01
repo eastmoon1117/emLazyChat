@@ -1,6 +1,7 @@
 package com.jared.emlazychat.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.jared.emlazychat.R;
+import com.jared.emlazychat.activity.HomeActivity;
 import com.jared.emlazychat.base.BaseFragment;
 import com.jared.emlazychat.utils.ToastUtil;
 
@@ -71,5 +73,8 @@ public class SignInFra extends BaseFragment implements View.OnClickListener{
             ToastUtil.show(context, "密码为空");
             return;
         }
+
+        startActivity(new Intent(getActivity(), HomeActivity.class));
+        getActivity().finish();
     }
 }

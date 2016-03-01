@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.jared.emlazychat.R;
+import com.jared.emlazychat.activity.LoginActivity;
 import com.jared.emlazychat.base.BaseFragment;
 import com.jared.emlazychat.utils.ToastUtil;
 
@@ -67,6 +68,7 @@ public class SignUpFra extends BaseFragment implements View.OnClickListener {
             ToastUtil.show(context, "密码不能为空");
         }
 
+        ((LoginActivity) getActivity()).go2FillInfo();
     }
 
 }
