@@ -7,7 +7,7 @@ import android.os.Parcelable;
 /**
  * Created by jared on 16/2/27.
  */
-public class Account implements Parcelable{
+public class Account implements Parcelable {
 
     private String account;
     private String name;
