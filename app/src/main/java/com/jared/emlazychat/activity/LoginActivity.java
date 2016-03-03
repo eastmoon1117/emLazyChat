@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.jared.emlazychat.R;
 import com.jared.emlazychat.base.BaseActivity;
+import com.jared.emlazychat.db.AccountDao;
+import com.jared.emlazychat.domain.Account;
 import com.jared.emlazychat.fragment.FillInfoFra;
 import com.jared.emlazychat.fragment.LogoFra;
 import com.jared.emlazychat.fragment.SignInFra;
@@ -36,12 +39,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     private int enterFlag = 0;
 
+    private AccountDao dao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_login);
+
         initView();
         initEvent();
+
         initFragment();
     }
 
@@ -118,9 +125,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     private void initFragment() {
         fm = getSupportFragmentManager();
-        //enterFlag = getIntent().getIntExtra(ENTER_KEY, ENTER_FIRST);
+        enterFlag = getIntent().getIntExtra(ENTER_KEY, ENTER_FIRST);
         enterFlag = ENTER_FIRST;
+
+        dao = new AccountDao(this);
+        Account account = dao.getCurrentAccount();
+        if(account != null && !TextUtils.isEmpty(account.getName())) {
+            enterFlag =  ENTER_LOGINED;
+        } else if(account != null){
+            enterFlag = ENTER_FILL_INFO;
+        }
+
         setTopBarAndCurrentFlag(enterFlag);
+
         FragmentTransaction transaction =  fm.beginTransaction();
         transaction.replace(R.id.container_login, currentFra, currentTag);
         transaction.addToBackStack(currentTag);
@@ -211,5 +228,4 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             }
         }
     }
-
 }

@@ -14,6 +14,7 @@ import com.jared.emlazychat.R;
 import com.jared.emlazychat.activity.LoginActivity;
 import com.jared.emlazychat.base.BaseFragment;
 import com.jared.emlazychat.utils.ToastUtil;
+import com.jared.emlazychat.widget.DialogLoading;
 
 /**
  * Created by jared on 16/2/28.
@@ -68,6 +69,11 @@ public class SignUpFra extends BaseFragment implements View.OnClickListener {
             ToastUtil.show(context, "密码不能为空");
         }
 
+        final DialogLoading dialog = new DialogLoading(getActivity());
+        dialog.show();
+
+        dialog.dismiss();
+        
         ((LoginActivity) getActivity()).go2FillInfo();
     }
 
