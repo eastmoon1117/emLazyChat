@@ -73,7 +73,7 @@ public class SignUpFra extends BaseFragment implements View.OnClickListener {
         dialog.show();
 
         dialog.dismiss();
-        
+
         ((LoginActivity) getActivity()).go2FillInfo();
     }
 

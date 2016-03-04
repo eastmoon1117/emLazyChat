@@ -14,17 +14,22 @@ import android.widget.EditText;
 import com.jared.emlazychat.R;
 import com.jared.emlazychat.activity.HomeActivity;
 import com.jared.emlazychat.base.BaseFragment;
+import com.jared.emlazychat.db.AccountDao;
+import com.jared.emlazychat.domain.Account;
+import com.jared.emlazychat.lib.EMChatManager;
+import com.jared.emlazychat.lib.callback.EMObjectCallBack;
 import com.jared.emlazychat.utils.ToastUtil;
 import com.jared.emlazychat.widget.DialogLoading;
 
 /**
  * Created by jared on 16/2/28.
  */
-public class SignInFra extends BaseFragment implements View.OnClickListener{
+public class SignInFra extends BaseFragment implements View.OnClickListener {
 
     private EditText etAccount;
     private EditText etPwd;
     private Button btnSignIn;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,25 +57,25 @@ public class SignInFra extends BaseFragment implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-        if(view == btnSignIn) {
+        if (view == btnSignIn) {
             doSignIn();
         }
     }
 
     private void doSignIn() {
         Context context = getActivity();
-        if(context == null) {
+        if (context == null) {
             return;
         }
 
-        String account = etAccount.getText().toString().trim();
-        if(TextUtils.isEmpty(account)) {
+        final String account = etAccount.getText().toString().trim();
+        if (TextUtils.isEmpty(account)) {
             ToastUtil.show(context, "用户名不能为空");
             return;
         }
 
         String password = etPwd.getText().toString().trim();
-        if(TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(password)) {
             ToastUtil.show(context, "密码为空");
             return;
         }
@@ -78,9 +83,40 @@ public class SignInFra extends BaseFragment implements View.OnClickListener{
         final DialogLoading dialog = new DialogLoading(getActivity());
         dialog.show();
 
-        dialog.dismiss();
+        EMChatManager.getInstance().login(account, password,
+                new EMObjectCallBack<Account>() {
+                    @Override
+                    public void onSuccess(Account account) {
+                        dialog.dismiss();
+                        EMChatManager.getInstance().initAccount(
+                                account.getAccount(), account.getToken());
 
-        startActivity(new Intent(getActivity(), HomeActivity.class));
-        getActivity().finish();
+                        AccountDao dao = new AccountDao(getActivity());
+                        account.setCurrent(true);
+
+                        Account localAccount = dao.getByAccount(account.getAccount());
+
+                        if (!TextUtils.isEmpty(account.getIcon())) {
+
+                        }
+
+                        if(localAccount != null) {
+                            dao.updateAccount(account);
+                        } else {
+                            dao.addAccount(account);
+                        }
+
+                        startActivity(new Intent(getActivity(), HomeActivity.class));
+                        getActivity().finish();
+                    }
+
+                    @Override
+                    public void onError(int error, String msg) {
+                        dialog.dismiss();
+
+                    }
+                });
+
+
     }
 }

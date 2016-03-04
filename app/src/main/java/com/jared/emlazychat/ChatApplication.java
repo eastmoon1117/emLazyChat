@@ -5,6 +5,8 @@ import android.app.Application;
 import android.app.Service;
 import android.content.Intent;
 
+import com.jared.emlazychat.lib.EMChat;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -22,7 +24,7 @@ public class ChatApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        EMChat.getInstance().init(this);
     }
 
     public void addActivity(Activity activity) {
