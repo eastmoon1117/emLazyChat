@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.jared.emlazychat.base.BaseFragment;
 import com.jared.emlazychat.db.AccountDao;
 import com.jared.emlazychat.domain.Account;
 import com.jared.emlazychat.lib.EMChatManager;
+import com.jared.emlazychat.lib.EMError;
 import com.jared.emlazychat.lib.callback.EMObjectCallBack;
 import com.jared.emlazychat.utils.ToastUtil;
 import com.jared.emlazychat.widget.DialogLoading;
@@ -26,10 +28,10 @@ import com.jared.emlazychat.widget.DialogLoading;
  */
 public class SignInFra extends BaseFragment implements View.OnClickListener {
 
+    private final static String TAG = "SignInFra";
     private EditText etAccount;
     private EditText etPwd;
     private Button btnSignIn;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,7 +115,26 @@ public class SignInFra extends BaseFragment implements View.OnClickListener {
                     @Override
                     public void onError(int error, String msg) {
                         dialog.dismiss();
-
+                        switch (error) {
+                            case EMError.ERROR_CLIENT_NET:
+                                Log.d(TAG, "客户端网络异常");
+                                ToastUtil.show(getActivity(), "客户端网络异常");
+                                break;
+                            case EMError.ERROR_SERVER:
+                                Log.d(TAG, "服务器异常");
+                                ToastUtil.show(getActivity(), "服务器异常");
+                                break;
+                            case EMError.Login.ACCOUNT_MISS:
+                                Log.d(TAG, "不存在此用户");
+                                ToastUtil.show(getActivity(), "不存在此用户");
+                                break;
+                            case EMError.Login.PASSWORD_ERROR:
+                                Log.d(TAG, "密码错误");
+                                ToastUtil.show(getActivity(), "密码错误");
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 });
 

@@ -62,14 +62,14 @@ public class EMChatManager {
     public EMFuture login(String account, String password,
                           final EMObjectCallBack callBack) {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.setTimeout(10 * 1000);
-        client.setMaxRetriesAndTimeout(3, 10 * 1000);
+        client.setTimeout(30 * 1000);
+        client.setMaxRetriesAndTimeout(5, 30 * 1000);
         client.setResponseTimeout(30 * 1000);
         String url = EMURL.URL_HTTP_LOGIN;
         RequestParams params = new RequestParams();
         params.put("account", account);
         params.put("password", password);
-
+        Log.d(TAG, "login");
         return new HttpFuture(client.post(context, url, params,
                 newObjectResponseHandler(callBack)));
     }
@@ -87,6 +87,7 @@ public class EMChatManager {
         RequestParams params = new RequestParams();
         params.put("account", account);
         params.put("password", password);
+        Log.d(TAG, "register");
         return new HttpFuture(client.post(context, url, params,
                 newObjectResponseHandler(callBack)));
     }
@@ -94,10 +95,9 @@ public class EMChatManager {
     private TextHttpResponseHandler newObjectResponseHandler(
             final EMObjectCallBack callBack) {
         return new TextHttpResponseHandler("utf-8") {
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, String s) {
-                Log.d(TAG, s);
+                Log.d(TAG, "newObjectResponseHandler" + s);
 
                 if (statusCode == 200) {
                     JsonParser parser = new JsonParser();
@@ -105,8 +105,8 @@ public class EMChatManager {
                     if (null == root) {
                         if (callBack != null) {
                             callBack.onError(EMError.ERROR_SERVER, "服务器异常");
-
-                        } else {
+                        }
+                    } else {
                             if (callBack != null) {
                                 JsonPrimitive flagObj = root.getAsJsonPrimitive("flag");
                                 boolean flag = flagObj.getAsBoolean();
@@ -130,8 +130,7 @@ public class EMChatManager {
                                 }
                             }
                         }
-                    }
-                } else {
+                    } else {
                     if(callBack != null) {
                         callBack.onError(EMError.ERROR_SERVER, "服务器异常");
                     }
