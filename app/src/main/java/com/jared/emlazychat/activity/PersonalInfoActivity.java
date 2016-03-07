@@ -1,6 +1,5 @@
 package com.jared.emlazychat.activity;
 
-import android.accounts.Account;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +10,8 @@ import com.jared.emlazychat.R;
 import com.jared.emlazychat.base.BaseActivity;
 import com.jared.emlazychat.fragment.PersonalListFra;
 import com.jared.emlazychat.widget.NormalTopBar;
+import com.jared.emlazychat.domain.Account;
+
 
 public class PersonalInfoActivity extends BaseActivity implements View.OnClickListener {
 

@@ -1,7 +1,8 @@
 package com.jared.emlazychat.fragment;
 
-import android.accounts.Account;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -15,6 +16,8 @@ import com.jared.emlazychat.R;
 import com.jared.emlazychat.activity.PersonalInfoActivity;
 import com.jared.emlazychat.activity.SettingActivity;
 import com.jared.emlazychat.base.BaseFragment;
+import com.jared.emlazychat.db.AccountDao;
+import com.jared.emlazychat.domain.Account;
 import com.jared.emlazychat.widget.NormalTopBar;
 
 /**
@@ -36,6 +39,33 @@ public class MeFra extends BaseFragment implements View.OnClickListener {
     private View mSettingView;
 
     private Account account;
+    private AccountDao dao;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        dao = new AccountDao(getActivity());
+        account = dao.getCurrentAccount();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        loadAccountInfo();
+    }
+
+    private void loadAccountInfo() {
+        account = dao.getCurrentAccount();
+        tvAccount.setText(account.getAccount());
+        tvName.setText(account.getName());
+
+        Log.d(TAG, account.getAccount()+account.getName());
+        Bitmap bitmap = BitmapFactory.decodeFile(account.getIcon());
+        if (bitmap != null) {
+            ivIcon.setImageBitmap(bitmap);
+        }
+    }
 
     @Nullable
     @Override

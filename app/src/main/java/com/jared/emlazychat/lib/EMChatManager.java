@@ -107,30 +107,32 @@ public class EMChatManager {
                             callBack.onError(EMError.ERROR_SERVER, "服务器异常");
                         }
                     } else {
-                            if (callBack != null) {
-                                JsonPrimitive flagObj = root.getAsJsonPrimitive("flag");
-                                boolean flag = flagObj.getAsBoolean();
-                                if(flag) {
-                                    JsonObject dataObj = root.getAsJsonObject("data");
-                                    if(dataObj == null) {
-                                        callBack.onSuccess(null);
-                                    } else {
-                                        Object data = new Gson().fromJson(dataObj,
-                                                callBack.getClazz());
-                                        callBack.onSuccess(data);
-                                    }
+                        if (callBack != null) {
+                            JsonPrimitive flagObj = root.getAsJsonPrimitive("flag");
+                            boolean flag = flagObj.getAsBoolean();
+                            if(flag) {
+                                JsonObject dataObj = root.getAsJsonObject("data");
+                                if(dataObj == null) {
+                                    callBack.onSuccess(null);
                                 } else {
-                                    JsonPrimitive errCodeObj = root
-                                            .getAsJsonPrimitive("errorCode");
-                                    JsonPrimitive errStringObj = root
-                                            .getAsJsonPrimitive("errorString");
-                                    int errorCode = errCodeObj.getAsInt();
-                                    String errorString =  errStringObj.getAsString();
-                                    callBack.onError(errorCode, errorString);
+                                    Object data = new Gson().fromJson(dataObj,
+                                            callBack.getClazz());
+                                    Log.d(TAG, "newObjectResponseHandler" + dataObj);
+                                    callBack.onSuccess(data);
                                 }
+                            } else {
+                                JsonPrimitive errCodeObj = root
+                                        .getAsJsonPrimitive("errorCode");
+                                JsonPrimitive errStringObj = root
+                                        .getAsJsonPrimitive("errorString");
+                                int errorCode = errCodeObj.getAsInt();
+                                String errorString =  errStringObj.getAsString();
+                                callBack.onError(errorCode, errorString);
                             }
                         }
-                    } else {
+                    }
+                }
+                else {
                     if(callBack != null) {
                         callBack.onError(EMError.ERROR_SERVER, "服务器异常");
                     }
