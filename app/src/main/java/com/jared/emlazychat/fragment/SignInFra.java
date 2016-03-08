@@ -95,13 +95,11 @@ public class SignInFra extends BaseFragment implements View.OnClickListener {
 
                         AccountDao dao = new AccountDao(getActivity());
                         account.setCurrent(true);
-
                         Account localAccount = dao.getByAccount(account.getAccount());
-
                         if (!TextUtils.isEmpty(account.getIcon())) {
 
                         }
-
+                        //dao.deleteAccount(account);
                         if(localAccount != null) {
                             dao.updateAccount(account);
                         } else {

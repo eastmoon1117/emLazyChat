@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.jared.emlazychat.domain.Account;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * Created by jared on 16/3/2.
  */
 public class AccountDao {
+    private final static String TAG = "AccountDao";
     private EMDBOpenHelper helper;
 
     public AccountDao(Context context) {
@@ -21,21 +23,21 @@ public class AccountDao {
     }
 
     private void setAccountContent(Account account, Cursor cursor) {
-        account.setAccount(cursor.getColumnName(
-                cursor.getColumnIndex(EMDB.Account.COLUMN_NAME)));
-        account.setArea(cursor.getColumnName(
+        account.setAccount(cursor.getString(
+                cursor.getColumnIndex(EMDB.Account.COLUMN_ACCOUNT)));
+        account.setArea(cursor.getString(
                 cursor.getColumnIndex(EMDB.Account.COLUMN_AREA)));
         account.setCurrent(cursor.getInt(
                 cursor.getColumnIndex(EMDB.Account.COLUMN_CURRENT)) == 1);
-        account.setIcon(cursor.getColumnName(
+        account.setIcon(cursor.getString(
                 cursor.getColumnIndex(EMDB.Account.COLUMN_ICON)));
-        account.setName(cursor.getColumnName(
+        account.setName(cursor.getString(
                 cursor.getColumnIndex(EMDB.Account.COLUMN_NAME)));
         account.setSex(cursor.getInt(
                 cursor.getColumnIndex(EMDB.Account.COLUMN_SEX)));
-        account.setSign(cursor.getColumnName(
+        account.setSign(cursor.getString(
                 cursor.getColumnIndex(EMDB.Account.COLUMN_SIGN)));
-        account.setToken(cursor.getColumnName(
+        account.setToken(cursor.getString(
                 cursor.getColumnIndex(EMDB.Account.COLUMN_TOKEN)));
     }
 
@@ -68,6 +70,8 @@ public class AccountDao {
             while (cursor.moveToNext()) {
                 Account account = new Account();
                 setAccountContent(account, cursor);
+                Log.d(TAG, "getCurrentAccount"+":"+account.getAccount()+":"+account.getName());
+                Log.d(TAG, account.getArea()+":"+account.getSign()+":"+account.getToken());
                 return account;
             }
         }
@@ -84,6 +88,8 @@ public class AccountDao {
             while (cursor.moveToNext()) {
                 Account account = new Account();
                 setAccountContent(account, cursor);
+                Log.d(TAG, "getByAccount"+":"+account.getAccount()+":"+account.getName());
+                Log.d(TAG, account.getArea()+":"+account.getSign()+":"+account.getToken());
                 return account;
             }
         }
@@ -99,6 +105,8 @@ public class AccountDao {
         values.put(EMDB.Account.COLUMN_SIGN,    account.getSign());
         values.put(EMDB.Account.COLUMN_TOKEN,   account.getToken());
         values.put(EMDB.Account.COLUMN_CURRENT, account.isCurrent() ? 1: 0);
+        Log.d(TAG, "setAccountValues"+":"+account.getAccount()+":"+account.getName());
+        Log.d(TAG, account.getArea()+":"+account.getSign()+":"+account.getToken());
     }
 
     public void addAccount(Account account) {

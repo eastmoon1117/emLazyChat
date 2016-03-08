@@ -109,6 +109,7 @@ public class Account implements Parcelable {
         val.putString("area", area);
         val.putString("token", token);
         val.putBoolean("current", current);
+        parcel.writeBundle(val);
     }
 
     @Override
@@ -116,7 +117,7 @@ public class Account implements Parcelable {
         return 0;
     }
 
-    Parcelable.Creator<Account> CREATOR = new Creator<Account>() {
+    public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
         @Override
         public Account createFromParcel(Parcel parcel) {
             return new Account(parcel);

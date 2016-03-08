@@ -1,8 +1,10 @@
 package com.jared.emlazychat.fragment;
 
-import android.accounts.Account;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +14,15 @@ import android.widget.TextView;
 import com.jared.emlazychat.R;
 import com.jared.emlazychat.activity.PersonalInfoActivity;
 import com.jared.emlazychat.base.BaseFragment;
+import com.jared.emlazychat.db.AccountDao;
+import com.jared.emlazychat.domain.Account;
 
 /**
  * Created by jared on 16/2/25.
  */
 public class PersonalListFra extends BaseFragment implements View.OnClickListener {
+
+    private final static String TAG = "PersonalListFra";
 
     private final static int REQUEST_CODE_GALLERY = 0X11;
     private final static int REQUEST_CODE_CAMERA = 0x12;
@@ -28,6 +34,9 @@ public class PersonalListFra extends BaseFragment implements View.OnClickListene
     private View mItemNameView;
     private TextView mTvNameView;
 
+    private View mItemAccountView;
+    private TextView mTvAccountView;
+
     private View mItemQRView;
 
     private View mItemSexView;
@@ -36,14 +45,16 @@ public class PersonalListFra extends BaseFragment implements View.OnClickListene
     private View mItemSignView;
     private TextView mTvSignView;
 
-    Account account;
+    private Account account;
+    private AccountDao dao;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
         account = arguments.getParcelable(PersonalInfoActivity.KEY_INTENT);
-
+        Log.d(TAG, account.getAccount()+":"+account.getName()+":"+account.getSex()+":"+account.getSign());
+        dao = new AccountDao(getActivity());
     }
 
     @Nullable
@@ -62,6 +73,9 @@ public class PersonalListFra extends BaseFragment implements View.OnClickListene
         mItemNameView = view.findViewById(R.id.personal_item_name);
         mTvNameView = (TextView)view.findViewById(R.id.personal_tv_name);
 
+        mItemAccountView = view.findViewById(R.id.personal_item_account);
+        mTvAccountView = (TextView) view.findViewById(R.id.personal_tv_account);
+
         mItemQRView = view.findViewById(R.id.personal_item_qr);
 
         mItemSexView = view.findViewById(R.id.personal_item_sex);
@@ -74,7 +88,27 @@ public class PersonalListFra extends BaseFragment implements View.OnClickListene
     }
 
     private void loadInfo() {
+        int sex = account.getSex();
+        String sexStr = "未填写";
+        switch (sex) {
+            case 1:
+                sexStr = "女";
+                break;
+            case 2:
+                sexStr = "男";
+                break;
+            default:
+                break;
+        }
 
+        mTvNameView.setText(account.getName());
+        Bitmap bitmap = BitmapFactory.decodeFile(account.getIcon());
+        if (bitmap != null) {
+            mIvIcon.setImageBitmap(bitmap);
+        }
+        mTvAccountView.setText(account.getAccount());
+        mTvSexView.setText(sexStr);
+        mTvSignView.setText(account.getSign());
     }
 
     private void initEvent() {

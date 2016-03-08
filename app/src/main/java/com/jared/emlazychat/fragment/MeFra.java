@@ -60,7 +60,6 @@ public class MeFra extends BaseFragment implements View.OnClickListener {
         tvAccount.setText(account.getAccount());
         tvName.setText(account.getName());
 
-        Log.d(TAG, account.getAccount()+account.getName());
         Bitmap bitmap = BitmapFactory.decodeFile(account.getIcon());
         if (bitmap != null) {
             ivIcon.setImageBitmap(bitmap);

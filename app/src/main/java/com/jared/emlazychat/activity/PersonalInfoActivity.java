@@ -30,6 +30,9 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.act_personal);
 
         account = getIntent().getParcelableExtra(KEY_INTENT);
+
+        Log.d(TAG, account.getAccount()+":"+account.getName()+":"+account.getSex());
+
         initView();
         initEvent();
         initFragment();

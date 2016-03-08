@@ -29,7 +29,7 @@ public interface EMDB {
                 + COLUMN_SIGN    + " text,"
                 + COLUMN_AREA    + " text,"
                 + COLUMN_TOKEN   + " text,"
-                + COLUMN_CURRENT + " integer" +")";
+                + COLUMN_CURRENT + " integer" + ")";
     }
 
     public interface Friend {
