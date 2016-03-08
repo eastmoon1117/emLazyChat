@@ -1,5 +1,6 @@
 package com.jared.emlazychat.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.jared.emlazychat.R;
+import com.jared.emlazychat.activity.HomeActivity;
 import com.jared.emlazychat.activity.LoginActivity;
 import com.jared.emlazychat.base.BaseFragment;
 
@@ -31,6 +33,8 @@ public class LogoFra extends BaseFragment implements View.OnClickListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle arguments = getArguments();
+        currentFlag = arguments.getInt(ARG_KEY);
     }
 
     @Nullable
@@ -53,6 +57,8 @@ public class LogoFra extends BaseFragment implements View.OnClickListener {
             btnSignIn.setVisibility(View.GONE);
             btnSignUp.setVisibility(View.GONE);
 
+            startActivity(new Intent(getActivity(), HomeActivity.class));
+            getActivity().finish();
         }
     }
 

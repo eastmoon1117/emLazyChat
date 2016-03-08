@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.jared.emlazychat.R;
@@ -18,6 +19,8 @@ import com.jared.emlazychat.fragment.SignUpFra;
 import com.jared.emlazychat.widget.NormalTopBar;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener{
+
+    private static final String TAG = "LoginActivity";
 
     private static final String TAG_LOGO = "logo";
     private static final String TAG_SIGN_IN = "sign_in";
@@ -126,10 +129,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private void initFragment() {
         fm = getSupportFragmentManager();
         enterFlag = getIntent().getIntExtra(ENTER_KEY, ENTER_FIRST);
-        enterFlag = ENTER_FIRST;
+        //enterFlag = ENTER_FIRST;
 
         dao = new AccountDao(this);
         Account account = dao.getCurrentAccount();
+        Log.d(TAG, account.getAccount()+":"+account.getName());
         if(account != null && !TextUtils.isEmpty(account.getName())) {
             enterFlag =  ENTER_LOGINED;
         } else if(account != null){
