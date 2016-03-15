@@ -5,6 +5,7 @@ import android.app.Application;
 import android.app.Service;
 import android.content.Intent;
 
+import com.jared.emlazychat.domain.Account;
 import com.jared.emlazychat.lib.EMChat;
 
 import java.util.LinkedList;
@@ -18,7 +19,7 @@ public class ChatApplication extends Application {
 
     private List<Activity> activities = new LinkedList<Activity>();
     private List<Service> services = new LinkedList<Service>();
-    //private Account account;
+    private Account account;
     private int pid;
 
     @Override
@@ -48,12 +49,12 @@ public class ChatApplication extends Application {
         closeServices();
     }
 
-    /*
+
     public Account getCurrentAccount() {
 
         return account;
     }
-*/
+
     private void closeActivities() {
         ListIterator<Activity>iterator = activities.listIterator();
         while(iterator.hasNext()) {

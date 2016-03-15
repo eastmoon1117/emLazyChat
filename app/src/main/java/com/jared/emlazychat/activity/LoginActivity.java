@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.jared.emlazychat.R;
@@ -27,12 +26,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private static final String TAG_SIGN_UP = "sign_up";
     private static final String TAG_FILL_INFO = "fill_info";
 
-    private static final String ENTER_KEY = "enter";
-    private static final int ENTER_FIRST = 0;
-    private static final int ENTER_LOGINED = 1;
-    private static final int ENTER_SIGN_IN = 2;
-    private static final int ENTER_SIGN_UP = 3;
-    private static final int ENTER_FILL_INFO = 4;
+    public static final String ENTER_KEY = "enter";
+    public static final int ENTER_FIRST = 0;
+    public static final int ENTER_LOGINED = 1;
+    public static final int ENTER_SIGN_IN = 2;
+    public static final int ENTER_SIGN_UP = 3;
+    public static final int ENTER_FILL_INFO = 4;
 
     private NormalTopBar mTopBar;
 
@@ -78,7 +77,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void signIn() {
-
+        currentFra = new SignInFra();
         mTopBar.setVisibility(View.VISIBLE);
         mTopBar.setTitle("登录");
         mTopBar.setBackVisibility(false);
@@ -133,7 +132,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
         dao = new AccountDao(this);
         Account account = dao.getCurrentAccount();
-        Log.d(TAG, account.getAccount()+":"+account.getName());
+        //Log.d(TAG, account.getAccount()+":"+account.getName());
         if(account != null && !TextUtils.isEmpty(account.getName())) {
             enterFlag =  ENTER_LOGINED;
         } else if(account != null){
