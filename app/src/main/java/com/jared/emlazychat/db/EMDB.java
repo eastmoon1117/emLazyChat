@@ -60,4 +60,19 @@ public interface EMDB {
                 + COLUMN_ALPHA    + " text,"
                 + COLUMN_SORT     + " integer" + ")";
     }
+
+    public interface BackTask {
+        String TABLE_NAME   = "back_task";
+
+        String COLUMN_ID    = "_id";
+        String COLUMN_OWNER = "owner";
+        String COLUMN_PATH  = "path";
+        String COLUMN_STATE = "state";// 0:未执行 1:正在执行 2:执行完成
+
+        String SQL_CREATE_TABLE = "create table " + TABLE_NAME + " ("
+                + COLUMN_ID    + " integer primary key autoincrement, "
+                + COLUMN_OWNER + " text,"
+                + COLUMN_PATH  + " text,"
+                + COLUMN_STATE + " integer" + ")";
+    }
 }

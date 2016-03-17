@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,11 @@ import android.widget.EditText;
 import com.jared.emlazychat.R;
 import com.jared.emlazychat.activity.LoginActivity;
 import com.jared.emlazychat.base.BaseFragment;
+import com.jared.emlazychat.db.AccountDao;
+import com.jared.emlazychat.domain.Account;
+import com.jared.emlazychat.lib.EMChatManager;
+import com.jared.emlazychat.lib.EMError;
+import com.jared.emlazychat.lib.callback.EMObjectCallBack;
 import com.jared.emlazychat.utils.ToastUtil;
 import com.jared.emlazychat.widget.DialogLoading;
 
@@ -21,6 +27,7 @@ import com.jared.emlazychat.widget.DialogLoading;
  */
 public class SignUpFra extends BaseFragment implements View.OnClickListener {
 
+    private final static String TAG = "SignUpFra";
 
     private EditText etAccount;
     private EditText etPwd;
@@ -72,9 +79,46 @@ public class SignUpFra extends BaseFragment implements View.OnClickListener {
         final DialogLoading dialog = new DialogLoading(getActivity());
         dialog.show();
 
-        dialog.dismiss();
+        EMChatManager.getInstance().register(account, password, new EMObjectCallBack<Account>() {
+            @Override
+            public void onSuccess(Account account) {
+                dialog.dismiss();
+                EMChatManager.getInstance().initAccount(
+                        account.getAccount(), account.getToken());
 
-        ((LoginActivity) getActivity()).go2FillInfo();
+                AccountDao dao = new AccountDao(getActivity());
+                account.setCurrent(true);
+                Account localAccount = dao.getByAccount(account.getAccount());
+                if(localAccount != null) {
+                    dao.updateAccount(account);
+                } else {
+                    dao.addAccount(account);
+                }
+
+                ((LoginActivity) getActivity()).go2FillInfo();
+            }
+
+            @Override
+            public void onError(int error, String msg) {
+                dialog.dismiss();
+
+                switch (error) {
+                    case EMError.ERROR_CLIENT_NET:
+                        Log.d(TAG, "客户端网络异常");
+                        ToastUtil.show(getActivity(), "客户端网络异常");
+                        break;
+                    case EMError.ERROR_SERVER:
+                        Log.d(TAG, "服务器异常");
+                        ToastUtil.show(getActivity(), "服务器异常");
+                        break;
+                    case EMError.Register.ACCOUNT_EXIST:
+                        Log.d(TAG, "用户已经存在");
+                        ToastUtil.show(getActivity(), "用户已经存在");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
-
 }

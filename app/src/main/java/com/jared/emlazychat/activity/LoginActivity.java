@@ -86,7 +86,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void signUp() {
-
+        currentFra  = new SignUpFra();
         mTopBar.setVisibility(View.VISIBLE);
         mTopBar.setTitle("注册");
         mTopBar.setBackVisibility(false);
@@ -95,6 +95,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void fillInfo() {
+        currentFra = new FillInfoFra();
 
         mTopBar.setVisibility(View.VISIBLE);
         mTopBar.setTitle("填写信息");

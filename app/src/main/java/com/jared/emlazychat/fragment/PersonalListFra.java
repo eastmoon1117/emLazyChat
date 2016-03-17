@@ -53,7 +53,7 @@ public class PersonalListFra extends BaseFragment implements View.OnClickListene
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
         account = arguments.getParcelable(PersonalInfoActivity.KEY_INTENT);
-        Log.d(TAG, account.getAccount()+":"+account.getName()+":"+account.getSex()+":"+account.getSign());
+        Log.d(TAG, account.getAccount() + ":" + account.getName() + ":" + account.getSex() + ":" + account.getSign());
         dao = new AccountDao(getActivity());
     }
 
@@ -68,21 +68,22 @@ public class PersonalListFra extends BaseFragment implements View.OnClickListene
 
     private void initView(View view) {
         mItemIconView = view.findViewById(R.id.personal_item_icon);
-        mIvIcon = (ImageView)view.findViewById(R.id.personal_iv_icon);
+        mIvIcon = (ImageView) view.findViewById(R.id.personal_iv_icon);
 
         mItemNameView = view.findViewById(R.id.personal_item_name);
-        mTvNameView = (TextView)view.findViewById(R.id.personal_tv_name);
+        mTvNameView = (TextView) view.findViewById(R.id.personal_tv_name);
 
         mItemAccountView = view.findViewById(R.id.personal_item_account);
         mTvAccountView = (TextView) view.findViewById(R.id.personal_tv_account);
 
         mItemQRView = view.findViewById(R.id.personal_item_qr);
 
+
         mItemSexView = view.findViewById(R.id.personal_item_sex);
-        mTvSexView = (TextView)view.findViewById(R.id.personal_tv_sex);
+        mTvSexView = (TextView) view.findViewById(R.id.personal_tv_sex);
 
         mItemSignView = view.findViewById(R.id.personal_item_sign);
-        mTvSignView = (TextView)view.findViewById(R.id.personal_tv_sign);
+        mTvSignView = (TextView) view.findViewById(R.id.personal_tv_sign);
 
         loadInfo();
     }
@@ -118,6 +119,14 @@ public class PersonalListFra extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
+        if (view == mItemIconView) {
+            openChooseDialog();
+        } else if (view == mItemQRView) {
+            ((PersonalInfoActivity) getActivity()).go2PersonalQR();
+        }
+    }
+
+    private void openChooseDialog() {
 
     }
 }

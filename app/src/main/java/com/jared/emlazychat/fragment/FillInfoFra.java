@@ -2,6 +2,7 @@ package com.jared.emlazychat.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -16,7 +17,18 @@ import android.widget.ImageView;
 import com.jared.emlazychat.R;
 import com.jared.emlazychat.activity.HomeActivity;
 import com.jared.emlazychat.base.BaseFragment;
+import com.jared.emlazychat.db.AccountDao;
+import com.jared.emlazychat.db.BackTaskDao;
+import com.jared.emlazychat.domain.Account;
+import com.jared.emlazychat.domain.BackTask;
+import com.jared.emlazychat.domain.NetTask;
+import com.jared.emlazychat.utils.BackTaskFactory;
+import com.jared.emlazychat.utils.CommonUtil;
+import com.jared.emlazychat.utils.DirUtil;
+import com.jared.emlazychat.utils.SerializableUtil;
 import com.jared.emlazychat.utils.ToastUtil;
+
+import java.io.File;
 
 /**
  * Created by jared on 16/2/29.
@@ -32,9 +44,14 @@ public class FillInfoFra extends BaseFragment implements View.OnClickListener,Te
     private Button btnClear;
     private Button btnOk;
 
+    private Account account;
+    private AccountDao dao;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dao = new AccountDao(getActivity());
+        account = dao.getCurrentAccount();
     }
 
     @Nullable
@@ -96,7 +113,31 @@ public class FillInfoFra extends BaseFragment implements View.OnClickListener,Te
             return;
         }
 
+        account.setName(text);
+        dao.updateAccount(account);
+
         startActivity(new Intent(getActivity(), HomeActivity.class));
         getActivity().finish();
+    }
+
+    private void addNameTask() {
+        String taskDir = DirUtil.getTaskDir(getActivity());
+        String fileName = CommonUtil.string2MD5(account.getAccount() + "_"
+                            + SystemClock.currentThreadTimeMillis());
+        String path = new File(taskDir, fileName).getAbsolutePath();
+
+        BackTask backTask = new BackTask();
+        backTask.setOwner(account.getAccount());
+        backTask.setPath(path);
+        backTask.setState(0);
+        new BackTaskDao(getActivity()).addTask(backTask);
+
+        NetTask netTask = BackTaskFactory.userNameChangeTask(account.getName());
+
+        try {
+            SerializableUtil.write(netTask, path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -136,6 +136,5 @@ public class SignInFra extends BaseFragment implements View.OnClickListener {
                     }
                 });
 
-
     }
 }
